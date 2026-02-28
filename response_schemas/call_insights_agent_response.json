@@ -1,0 +1,54 @@
+{
+  "agent_name": "Call Insights Agent",
+  "agent_id": "69a279818e6d0e51fd5cd358",
+  "description": "Analyzes stored call transcripts and summaries to surface trends, common questions, missed opportunities, and service quality metrics for the restaurant owner/manager. Provides actionable insights and recommendations to improve customer service and business operations.",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "result": {
+      "total_calls_analyzed": "number",
+      "top_questions": [
+        {
+          "question": "string",
+          "count": "number"
+        }
+      ],
+      "trends": [
+        "string"
+      ],
+      "missed_opportunities": [
+        "string"
+      ],
+      "action_items": [
+        "string"
+      ],
+      "service_quality_score": "number",
+      "summary": "string",
+      "period": "string"
+    }
+  },
+  "example_response": {
+    "result": {
+      "total_calls_analyzed": 0,
+      "top_questions": [
+        {
+          "question": "The frequently asked question",
+          "count": 0
+        }
+      ],
+      "trends": [
+        "sample string"
+      ],
+      "missed_opportunities": [
+        "sample string"
+      ],
+      "action_items": [
+        "sample string"
+      ],
+      "service_quality_score": 0,
+      "summary": "Executive summary of the call analysis",
+      "period": "Time period that was analyzed"
+    }
+  }
+}

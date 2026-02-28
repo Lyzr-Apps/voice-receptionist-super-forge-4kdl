@@ -1,0 +1,63 @@
+{
+  "app_name": "VoiceHost AI - Restaurant Voice Receptionist",
+  "agents": {
+    "voice_receptionist_agent": {
+      "agent_id": "69a279a0ad98307a3fb278ff",
+      "name": "Voice Receptionist Agent",
+      "type": "voice",
+      "provider": "OpenAI",
+      "model": "gpt-4.1",
+      "temperature": 0.5,
+      "top_p": 0.95,
+      "has_knowledge_base": true,
+      "has_voice_config": true,
+      "voice_config": {
+        "initiator": "human",
+        "message": "",
+        "language": "English",
+        "voice": "sage"
+      },
+      "tools": ["GOOGLECALENDAR_CREATE_EVENT", "GOOGLECALENDAR_FIND_EVENT", "GOOGLECALENDAR_FIND_FREE_SLOTS", "GOOGLECALENDAR_LIST_CALENDARS"],
+      "tool_source": "composio",
+      "rag_id": "69a2794f00c2d274880f6c71",
+      "rag_name": "restaurantbusinessinfokb0x8h"
+    },
+    "call_insights_agent": {
+      "agent_id": "69a279818e6d0e51fd5cd358",
+      "name": "Call Insights Agent",
+      "type": "json",
+      "provider": "OpenAI",
+      "model": "gpt-4.1",
+      "temperature": 0.3,
+      "top_p": 1,
+      "has_knowledge_base": false,
+      "has_voice_config": false,
+      "tools": [],
+      "tool_source": null,
+      "rag_id": null,
+      "rag_name": null
+    }
+  },
+  "knowledge_bases": {
+    "restaurant_business_info_kb": {
+      "rag_id": "69a2794f00c2d274880f6c71",
+      "rag_name": "restaurantbusinessinfokb0x8h",
+      "description": "Knowledge base containing restaurant business information including operating hours, menu items, location details, daily specials, frequently asked questions, reservation policies, dietary accommodations, parking info, and contact details."
+    }
+  },
+  "workflow": {
+    "nodes": [
+      {"id": "input_node", "type": "Input", "label": "User Input", "nodeCategory": "input"},
+      {"id": "voice_receptionist_agent", "type": "Agent", "label": "Voice Receptionist Agent", "nodeCategory": "agent"},
+      {"id": "call_insights_agent", "type": "Agent", "label": "Call Insights Agent", "nodeCategory": "agent"},
+      {"id": "output_node_1", "type": "Output", "label": "Voice Call Output", "nodeCategory": "end"},
+      {"id": "output_node_2", "type": "Output", "label": "Insights Output", "nodeCategory": "end"}
+    ],
+    "edges": [
+      {"source": "input_node", "target": "voice_receptionist_agent"},
+      {"source": "input_node", "target": "call_insights_agent"},
+      {"source": "voice_receptionist_agent", "target": "output_node_1"},
+      {"source": "call_insights_agent", "target": "output_node_2"}
+    ]
+  }
+}
