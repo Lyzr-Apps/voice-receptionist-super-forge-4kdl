@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Progress } from '@/components/ui/progress'
-import { RiPhoneLine, RiCalendarCheckLine, RiRouteLine, RiTimeLine, RiBarChartLine, RiArrowRightLine, RiSparklingLine, RiQuestionLine, RiAlertLine, RiCheckboxCircleLine, RiTrendUpLine } from 'react-icons/ri'
+import { RiPhoneLine, RiCalendarCheckLine, RiRouteLine, RiTimeLine, RiBarChartLine, RiArrowRightLine, RiSparklingLine, RiQuestionLine, RiAlertLine, RiCheckboxCircleLine, RiTrendUpLine, RiLinkM, RiFileCopyLine, RiCheckLine } from 'react-icons/ri'
 import { callAIAgent } from '@/lib/aiAgent'
 
 interface CallLogEntry {
@@ -116,6 +116,7 @@ export default function DashboardSection({ callLog, showSample }: DashboardSecti
   const [insightsLoading, setInsightsLoading] = useState(false)
   const [insightsError, setInsightsError] = useState<string | null>(null)
   const [showInsights, setShowInsights] = useState(false)
+  const [copiedLink, setCopiedLink] = useState<string | null>(null)
 
   const stats = showSample ? SAMPLE_STATS : {
     totalCalls: callLog.length,
@@ -263,6 +264,29 @@ export default function DashboardSection({ callLog, showSample }: DashboardSecti
                 {insightsError}
               </div>
             )}
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-serif tracking-wide flex items-center gap-2">
+              <RiLinkM className="h-4 w-4 text-primary" />
+              Customer Links
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs text-muted-foreground truncate">Booking Page</span>
+              <Button variant="outline" size="sm" className="h-7 text-xs gap-1 shrink-0" onClick={() => { const url = typeof window !== 'undefined' ? `${window.location.origin}/book` : '/book'; navigator.clipboard.writeText(url).then(() => { setCopiedLink('book'); setTimeout(() => setCopiedLink(null), 2000) }) }}>
+                {copiedLink === 'book' ? <><RiCheckLine className="h-3 w-3 text-green-600" /> <span className="text-green-600">Copied!</span></> : <><RiFileCopyLine className="h-3 w-3" /> Copy</>}
+              </Button>
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs text-muted-foreground truncate">Menu Page</span>
+              <Button variant="outline" size="sm" className="h-7 text-xs gap-1 shrink-0" onClick={() => { const url = typeof window !== 'undefined' ? `${window.location.origin}/menu` : '/menu'; navigator.clipboard.writeText(url).then(() => { setCopiedLink('menu'); setTimeout(() => setCopiedLink(null), 2000) }) }}>
+                {copiedLink === 'menu' ? <><RiCheckLine className="h-3 w-3 text-green-600" /> <span className="text-green-600">Copied!</span></> : <><RiFileCopyLine className="h-3 w-3" /> Copy</>}
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>

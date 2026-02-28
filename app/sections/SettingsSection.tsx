@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { RiSave3Line, RiCheckLine, RiUploadCloud2Line, RiDeleteBinLine, RiFileTextLine, RiAlertLine, RiBuilding2Line, RiPhoneLine, RiCalendarCheckLine, RiUserVoiceLine } from 'react-icons/ri'
+import { RiSave3Line, RiCheckLine, RiUploadCloud2Line, RiDeleteBinLine, RiFileTextLine, RiAlertLine, RiBuilding2Line, RiPhoneLine, RiCalendarCheckLine, RiUserVoiceLine, RiLinkM, RiFileCopyLine } from 'react-icons/ri'
 import { useRAGKnowledgeBase } from '@/lib/ragKnowledgeBase'
 
 const RAG_ID = '69a2794f00c2d274880f6c71'
@@ -50,6 +50,7 @@ export default function SettingsSection() {
   const [uploadStatus, setUploadStatus] = useState<string | null>(null)
   const [uploadError, setUploadError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [copiedLink, setCopiedLink] = useState<string | null>(null)
 
   const { documents, loading: docsLoading, error: docsError, fetchDocuments, uploadDocument, removeDocuments } = useRAGKnowledgeBase()
 
@@ -146,6 +147,38 @@ export default function SettingsSection() {
             <div>
               <Label htmlFor="specials" className="text-sm">Current Specials</Label>
               <Textarea id="specials" placeholder="Happy Hour 4-6pm: Half-price appetizers&#10;Tuesday: Wine pairing dinner $65pp" rows={2} value={settings.specials} onChange={(e) => updateField('specials', e.target.value)} />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg font-serif tracking-wide flex items-center gap-2">
+              <RiLinkM className="h-5 w-5 text-primary" />
+              Customer Links
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">Share these links with your customers so they can book tables and view your menu online.</p>
+            <div className="space-y-3">
+              <div>
+                <Label className="text-sm font-medium">Booking Page</Label>
+                <div className="flex items-center gap-2 mt-1">
+                  <Input readOnly value={typeof window !== 'undefined' ? `${window.location.origin}/book` : '/book'} className="text-sm bg-secondary/50" />
+                  <Button variant="outline" size="sm" className="shrink-0 gap-1.5" onClick={() => { const url = typeof window !== 'undefined' ? `${window.location.origin}/book` : '/book'; navigator.clipboard.writeText(url).then(() => { setCopiedLink('book'); setTimeout(() => setCopiedLink(null), 2000) }) }}>
+                    {copiedLink === 'book' ? <><RiCheckLine className="h-4 w-4 text-green-600" /> <span className="text-green-600">Copied!</span></> : <><RiFileCopyLine className="h-4 w-4" /> Copy Link</>}
+                  </Button>
+                </div>
+              </div>
+              <div>
+                <Label className="text-sm font-medium">Menu Page</Label>
+                <div className="flex items-center gap-2 mt-1">
+                  <Input readOnly value={typeof window !== 'undefined' ? `${window.location.origin}/menu` : '/menu'} className="text-sm bg-secondary/50" />
+                  <Button variant="outline" size="sm" className="shrink-0 gap-1.5" onClick={() => { const url = typeof window !== 'undefined' ? `${window.location.origin}/menu` : '/menu'; navigator.clipboard.writeText(url).then(() => { setCopiedLink('menu'); setTimeout(() => setCopiedLink(null), 2000) }) }}>
+                    {copiedLink === 'menu' ? <><RiCheckLine className="h-4 w-4 text-green-600" /> <span className="text-green-600">Copied!</span></> : <><RiFileCopyLine className="h-4 w-4" /> Copy Link</>}
+                  </Button>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>

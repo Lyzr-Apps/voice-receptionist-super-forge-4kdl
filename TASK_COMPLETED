@@ -1,9 +1,0 @@
-VoiceHost AI - Restaurant Voice Receptionist UI build complete.
-
-Files created/modified:
-- app/globals.css (Heritage Premium theme)
-- app/sections/DashboardSection.tsx (stats, recent calls, AI insights)
-- app/sections/CallLogSection.tsx (filterable call history with slide-over details)
-- app/sections/SettingsSection.tsx (business config + RAG knowledge base upload)
-- app/sections/VoiceCallSection.tsx (WebSocket voice call interface)
-- app/page.tsx (composition shell with sidebar navigation)
