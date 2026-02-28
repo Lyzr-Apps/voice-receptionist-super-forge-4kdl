@@ -5,12 +5,13 @@ import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { RiDashboardLine, RiPhoneLine, RiFileListLine, RiSettings3Line, RiRestaurantLine, RiRadioButtonLine } from 'react-icons/ri'
+import { RiDashboardLine, RiPhoneLine, RiFileListLine, RiSettings3Line, RiRestaurantLine, RiRadioButtonLine, RiUserFollowLine } from 'react-icons/ri'
 
 import DashboardSection from './sections/DashboardSection'
 import VoiceCallSection from './sections/VoiceCallSection'
 import CallLogSection from './sections/CallLogSection'
 import SettingsSection from './sections/SettingsSection'
+import CustomerTrackingSection from './sections/CustomerTrackingSection'
 
 interface CallLogEntry {
   id: string
@@ -53,12 +54,13 @@ class ErrorBoundary extends React.Component<
   }
 }
 
-type Section = 'dashboard' | 'voice' | 'calllog' | 'settings'
+type Section = 'dashboard' | 'voice' | 'calllog' | 'customers' | 'settings'
 
 const NAV_ITEMS: Array<{ id: Section; label: string; icon: React.ComponentType<{ className?: string }> }> = [
   { id: 'dashboard', label: 'Dashboard', icon: RiDashboardLine },
   { id: 'voice', label: 'Voice Call', icon: RiPhoneLine },
   { id: 'calllog', label: 'Call Log', icon: RiFileListLine },
+  { id: 'customers', label: 'Customers', icon: RiUserFollowLine },
   { id: 'settings', label: 'Settings', icon: RiSettings3Line },
 ]
 
@@ -159,7 +161,7 @@ export default function Page() {
           <header className="h-14 border-b border-border bg-card px-6 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-3">
               <h2 className="font-serif font-semibold text-lg tracking-wide capitalize">
-                {activeSection === 'calllog' ? 'Call Log' : activeSection === 'voice' ? 'Voice Call' : activeSection}
+                {activeSection === 'calllog' ? 'Call Log' : activeSection === 'voice' ? 'Voice Call' : activeSection === 'customers' ? 'Customer Tracking' : activeSection}
               </h2>
               {activeAgentId && (
                 <Badge variant="outline" className="text-xs gap-1 animate-pulse">
@@ -183,6 +185,9 @@ export default function Page() {
             )}
             {activeSection === 'calllog' && (
               <CallLogSection callLog={callLog} showSample={showSample} />
+            )}
+            {activeSection === 'customers' && (
+              <CustomerTrackingSection />
             )}
             {activeSection === 'settings' && (
               <SettingsSection />

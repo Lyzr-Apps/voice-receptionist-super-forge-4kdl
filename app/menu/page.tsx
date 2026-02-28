@@ -89,6 +89,14 @@ export default function Page() {
     } catch {
       // ignore
     }
+    // Log menu page visit
+    try {
+      const visits = JSON.parse(localStorage.getItem('voicehost-menu-visitors') || '[]')
+      if (Array.isArray(visits)) {
+        visits.push({ id: crypto.randomUUID(), timestamp: new Date().toISOString(), page: 'menu', referrer: document.referrer || 'direct' })
+        localStorage.setItem('voicehost-menu-visitors', JSON.stringify(visits.slice(-200)))
+      }
+    } catch { /* ignore */ }
   }, [])
 
   const restaurantName = settings?.businessName || 'Heritage Bistro'

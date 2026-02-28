@@ -101,6 +101,14 @@ export default function Page() {
     } catch {
       // ignore
     }
+    // Log booking page visit
+    try {
+      const visits = JSON.parse(localStorage.getItem('voicehost-booking-visitors') || '[]')
+      if (Array.isArray(visits)) {
+        visits.push({ id: crypto.randomUUID(), timestamp: new Date().toISOString(), page: 'booking', referrer: document.referrer || 'direct' })
+        localStorage.setItem('voicehost-booking-visitors', JSON.stringify(visits.slice(-200)))
+      }
+    } catch { /* ignore */ }
   }, [])
 
   const restaurantName = settings?.businessName || 'Heritage Bistro'
@@ -138,6 +146,24 @@ export default function Page() {
       if (agentResult.success) {
         const responseText = agentResult?.response?.result?.text ?? agentResult?.response?.message ?? 'Reservation request has been submitted successfully.'
         setResult({ success: true, message: responseText })
+        // Log successful reservation
+        try {
+          const reservations = JSON.parse(localStorage.getItem('voicehost-reservations') || '[]')
+          if (Array.isArray(reservations)) {
+            reservations.push({
+              id: crypto.randomUUID(),
+              timestamp: new Date().toISOString(),
+              guestName: formData.name,
+              contact: formData.contact || 'Not provided',
+              date: formData.date,
+              time: formData.time,
+              partySize: formData.partySize,
+              specialRequests: formData.specialRequests || 'None',
+              status: 'confirmed',
+            })
+            localStorage.setItem('voicehost-reservations', JSON.stringify(reservations.slice(-200)))
+          }
+        } catch { /* ignore */ }
         setFormData({ name: '', contact: '', date: '', time: '', partySize: '2', specialRequests: '' })
       } else {
         setResult({ success: false, message: agentResult?.error ?? 'We could not process your reservation at this time. Please try again or call us directly.' })
